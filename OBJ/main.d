@@ -49,3 +49,5 @@
 ..\obj\main.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h
 ..\obj\main.o: ..\HARDWARE\MYPID\mypid.h
 ..\obj\main.o: ..\HARDWARE\MATRIXKEY\matrixkey.h
+..\obj\main.o: ..\HARDWARE\STEPMOTOR\stepmotor.h
+..\obj\main.o: ..\HARDWARE\FDC2214\fdc2214.h

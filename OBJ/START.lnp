@@ -14,6 +14,8 @@
 "..\obj\timer.o"
 "..\obj\mypid.o"
 "..\obj\matrixkey.o"
+"..\obj\stepmotor.o"
+"..\obj\fdc2214.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"

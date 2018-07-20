@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LED;..\HARDWARE\LCD;..\HARDWARE\IIC;..\HARDWARE\MPU6050;..\HARDWARE\MPU6050\eMPL;..\FWLIB\inc;..\HARDWARE\KEY;..\USMART;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\TIMER;..\HARDWARE\MYPID;..\HARDWARE\MATRIXKEY</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\HARDWARE\LED;..\HARDWARE\LCD;..\HARDWARE\IIC;..\HARDWARE\MPU6050;..\HARDWARE\MPU6050\eMPL;..\FWLIB\inc;..\HARDWARE\KEY;..\USMART;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\TIMER;..\HARDWARE\MYPID;..\HARDWARE\MATRIXKEY;..\HARDWARE\STEPMOTOR;..\HARDWARE\FDC2214</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -487,6 +487,16 @@
               <FileName>matrixkey.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\MATRIXKEY\matrixkey.c</FilePath>
+            </File>
+            <File>
+              <FileName>stepmotor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\STEPMOTOR\stepmotor.c</FilePath>
+            </File>
+            <File>
+              <FileName>fdc2214.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\FDC2214\fdc2214.c</FilePath>
             </File>
           </Files>
         </Group>

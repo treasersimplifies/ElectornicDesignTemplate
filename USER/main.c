@@ -12,12 +12,17 @@
 #include "inv_mpu_dmp_motion_driver.h" 
 #include "mypid.h"
 #include "matrixkey.h"
+#include "stepmotor.h"
+#include "fdc2214.h"
 //Pins used：
 //1.PB9,PB8 : I2C for MPU6050
 //2.PC0 : INT for MPU6050
 //3.PA5 : ADC Input  CH5, 12bit mode
 //4.PA4 : DAC Output CH1, 12bit
 //5.PB0-PB7 : 4X4 matrix keys
+//6.PF1 2 3 : Stepmotro PUL DIR ENA
+//7.PC4(SCL) PC5(SDA) ： I2C for fdc2214 PC
+
 
 //Abilities:
 //1.PID 采样频率由TIM3定时器决定
@@ -138,6 +143,9 @@ int main(void)
 	int row=0;
 	int column=0;
 	
+	float res0,res1,res2,res3;
+	float temp0,temp1,temp2,temp3;
+	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
 	delay_init(168);  			//初始化延时函数
 	uart_init(460800);			//初始化串口波特率为50,0000//460800:OK
@@ -147,13 +155,21 @@ int main(void)
 	MPU_Init();					//初始化MPU6050
 	Adc_Init();         		//初始化ADC, 0-4095
 	Dac1_Init();		 		//DAC通道1初始化	,0-4095
-	TIM3_Int_Init(1000-1,8400-1);	//定时器时钟84M，分频系数8400，所以84M/8400=10Khz的计数频率，计数1000次为100ms，every 0.1s一次中断 
-	//delay_ms(150);
+	//TIM3_Int_Init(1000-1,8400-1);	//Timer for PID 定时器时钟84M，分频系数8400，所以84M/8400=10Khz的计数频率，计数1000次为100ms，every 0.1s一次中断 
 	MATRI4X4KEY_Init();
+	STEPMOTOR_Init();
+	while(FDC2214_Init());
+	
+	printf("Init OK\n.");
+	temp0 = Cap_Calculate(0);//读取初始值******
+	temp1 = Cap_Calculate(1);
+	temp2 = Cap_Calculate(2);
+	temp3 = Cap_Calculate(3);
+	printf("temp0 = %f,temp1 = %f,temp2 = %f,temp3 = %f",temp0,temp1,temp2,temp3);
 	
 	pidref=1000;
-	PID_Init(&pidin,&pidout,&pidref,2,0,0, P_ON_M, DIRECT);//p,i,d=1,1,1
-	SetOutputLimits(1,500);
+	//PID_Init(&pidin,&pidout,&pidref,2,0,0, P_ON_M, DIRECT);//p,i,d=1,1,1
+	//SetOutputLimits(1,500);
 	
 	//MPU6050_MUST_Init();
 	DAC_SetChannel1Data(DAC_Align_12b_R,dacval);//初始值为0
@@ -161,8 +177,15 @@ int main(void)
 	
  	while(1)
 	{
-		printf("running....\n");
-		delay_ms(500);
+		//printf("running....\n");
+		//delay_ms(500);
+		Step_Ouput(42);//42 steps per second.
+		res0 = Cap_Calculate(0);//采集数据
+		res1 = Cap_Calculate(1);
+		res2 = Cap_Calculate(2);
+		res3 = Cap_Calculate(3);
+		printf("CH0;%3.3f CH1;%3.3f CH2;%3.3f CH3;%3.3f\r\n",res0-temp0,res1-temp1,res2-temp2,res3-temp3);
+		delay_ms(1000);
 		//if(MATRI4_4KEY_Scan(&row, &column)==0)
 			//printf("key pressed row=%d, column=%d\n",row,column);
 		
